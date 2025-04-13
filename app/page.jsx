@@ -15,28 +15,20 @@ export default function TablePage() {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
-    const thm = localStorage.getItem("theme");
+    let thm = localStorage.getItem("theme");
     if (thm) setTheme(thm);
 
-    return () => clearTimeout(timeout);
+    const timer = setTimeout(() => setLoading(false), 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center bg-[#0959b9] min-h-screen">
-        <motion.div
-          className="flex justify-center items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          {/* <h1 className="text-3xl font-semibold">Loading...</h1> */}
+      <div className="flex justify-center items-center h-screen bg-[#0a5ab9]">
+        <h1 className="text-2xl font-bold animate-pulse" style={{ fontFamily: "Toon Around" }}>
+          {/* Loading... */}
           <img src="/load.gif" alt="" />
-        </motion.div>
+        </h1>
       </div>
     );
   }
@@ -46,6 +38,7 @@ export default function TablePage() {
       className="flex justify-center items-center min-h-screen relative px-4"
       style={{ backgroundColor: themes[theme].bg }}
     >
+      {/* Theme Button */}
       <motion.div
         key={theme}
         className="absolute right-3 top-3"
@@ -92,6 +85,7 @@ export default function TablePage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.5 }}
       >
+        {/* Graph Image */}
         <motion.img
           key={theme}
           initial={{ opacity: 0, scale: 0.5 }}
@@ -106,9 +100,10 @@ export default function TablePage() {
           alt="Graph"
         />
 
+        {/* Title */}
         <motion.h1
           key={theme}
-          className="text-2xl sm:text-3xl text-center font-semibold"
+          className={`text-2xl sm:text-3xl text-center font-semibold`}
           style={{ fontFamily: 'Toon Around', color: themes[theme].border }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -117,6 +112,7 @@ export default function TablePage() {
           MONTHLY HOURS : XYZ
         </motion.h1>
 
+        {/* Calendar Table */}
         <div className="overflow-x-auto w-full">
           <motion.table
             key={theme}
@@ -124,7 +120,11 @@ export default function TablePage() {
             style={{ borderColor: themes[theme].border }}
             initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
             animate={{ opacity: 1, scale: 1, rotate: 360 }}
-            transition={{ duration: 0.8, delay: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 1,
+              ease: [0, 0.71, 0.2, 1.01],
+            }}
           >
             <thead>
               <motion.tr className="grid grid-cols-7">
@@ -178,6 +178,7 @@ export default function TablePage() {
           </motion.table>
         </div>
 
+        {/* Footer Icons with Buttons */}
         <div className="flex justify-center flex-wrap gap-4 max-w-[90%] mt-4">
           <motion.img
             key={theme}
@@ -210,9 +211,15 @@ export default function TablePage() {
               alt=""
             />
             <div
-              className="absolute bottom-0 right-0 w-12 h-12 cursor-pointer -translate-x-2 translate-y-2"
-              onClick={() => router.push("/")}
-            ></div>
+              className="absolute bottom-0 left-0 w-12 h-12 cursor-pointer"
+              onClick={() => router.push("/planner")}
+              title="Go to Planner"
+            />
+            <div
+              className="absolute bottom-0 right-0 w-12 h-12 cursor-pointer"
+              onClick={() => router.push("/tracker")}
+              title="Go to Tracker"
+            />
           </motion.div>
         </div>
       </motion.div>
