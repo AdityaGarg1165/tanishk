@@ -1,12 +1,13 @@
 'use client'
 import { useState } from "react";
+import { motion } from 'framer-motion'
 
 export default function TablePage() {
   const [theme, setTheme] = useState("yellow");
   const themes = {
-    yellow: { bg: "#e7ebd0", border: "#8b906f",graph:"yellow_graph.png",m:"yellow_tree",l:"yellow_coin1",r:"yellow_coin2" },
-    blue: { bg: "#e2f4f8", border: "#6f7f90",graph:"blue_graph.png",m:"blue_fish",l:"blue_coin1",r:"blue_coin2" },
-    sand: { bg: "#efd5b4", border: "#8f7f6f" ,graph:"sand_graph.png",m:"sand_wheel",l:"sand_coin1",r:"sand_coin2" },
+    yellow: { bg: "#e7ebd0", border: "#8b906f", graph: "yellow_graph.png", m: "yellow_tree", l: "yellow_coin1", r: "yellow_coin2" },
+    blue: { bg: "#e2f4f8", border: "#6f7f90", graph: "blue_graph.png", m: "blue_fish", l: "blue_coin1", r: "blue_coin2" },
+    sand: { bg: "#efd5b4", border: "#8f7f6f", graph: "sand_graph.png", m: "sand_wheel", l: "sand_coin1", r: "sand_coin2" },
   };
 
   return (
@@ -14,7 +15,14 @@ export default function TablePage() {
       className="flex justify-center items-center min-h-screen relative px-4"
       style={{ backgroundColor: themes[theme].bg }}
     >
-      <div className="absolute right-3 top-3">
+      {/* Theme Switcher */}
+      <motion.div
+        key={theme}  // Trigger animation on theme change
+        className="absolute right-3 top-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -44,23 +52,74 @@ export default function TablePage() {
             </button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col absolute top-12 items-center -space-y-12 w-full max-w-screen-md">
-        <img src={`/${themes[theme].graph}`} className="h-[18%] w-[80%] max-w-[100%] rounded-2xl" alt="Background" />
-        <div className="overflow-x-auto w-full mt-20">
-          <table
+      {/* Main Content */}
+      <motion.div
+        key={theme}  // Trigger animation on theme change
+        className="flex flex-col absolute top-12 items-center gap-4 w-full max-w-screen-md px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+      >
+        {/* Graph */}
+        <motion.img
+          key={theme}  // Trigger animation on theme change
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.8,
+            delay: 0.5,
+            ease: [0, 0.71, 0.2, 1.01],
+          }}
+          src={`/${themes[theme].graph}`}
+          className="h-[18%] w-[80%] max-w-[100%] rounded-2xl"
+          alt="Background"
+        />
+
+        {/* Monthly Hours Heading */}
+        <motion.h1
+          key={theme}  // Trigger animation on theme change
+          className={`text-2xl sm:text-3xl text-center font-semibold`}
+          style={{ fontFamily: 'Toon Around' ,color:themes[theme].border}}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1 }}
+        >
+          MONTHLY HOURS : XYZ
+        </motion.h1>
+
+        {/* Table */}
+        <div className="overflow-x-auto w-full">
+          <motion.table
+            key={theme}  // Trigger animation on theme change
             className="border-collapse border w-full max-w-[70%] mx-auto"
             style={{ borderColor: themes[theme].border }}
+            initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+            animate={{ opacity: 1, scale: 1, rotate: 360 }}
+            transition={{
+              duration: 0.8,
+              delay: 1,
+              ease: [0, 0.71, 0.2, 1.01],
+            }}
           >
             <thead>
-              <tr className="grid grid-cols-7">
+              <motion.tr className="grid grid-cols-7">
                 {Array.from({ length: 7 }).map((_, index) => (
-                  <th key={index} className="border text-center font-normal aspect-square" style={{ borderColor: themes[theme].border }}>
-                    {index + 1}
-                  </th>
+                  <motion.th
+                    key={index}
+                    className="border text-center font-normal aspect-square"
+                    style={{ borderColor: themes[theme].border }}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
+                  >
+                    <p style={{ fontFamily: "toon around" }} className="mt-2">
+                      {index + 1}
+                    </p>
+                  </motion.th>
                 ))}
-              </tr>
+              </motion.tr>
             </thead>
             <tbody>
               {[
@@ -69,24 +128,64 @@ export default function TablePage() {
                 ['22', '23', '24', '25', '26', '27', '28'],
                 ['29', '30', '31', '', '', '', ''],
               ].map((row, rowIndex) => (
-                <tr key={rowIndex} className="grid grid-cols-7">
+                <motion.tr
+                  key={rowIndex}
+                  className="grid grid-cols-7"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 1.5 + rowIndex * 0.2 }}
+                >
                   {row.map((item, cellIndex) => (
-                    <td key={cellIndex} className="border text-center aspect-square" style={{ borderColor: themes[theme].border }}>
-                      {item}
-                    </td>
+                    <motion.td
+                      key={cellIndex}
+                      className="border text-center aspect-square"
+                      style={{ borderColor: themes[theme].border }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: 1.8 + cellIndex * 0.1 }}
+                    >
+                      <p className="mt-1" style={{ fontFamily: "toon around" }}>
+                        {item}
+                      </p>
+                    </motion.td>
                   ))}
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
-          </table>
+          </motion.table>
         </div>
 
-        <div className="flex mt-20 justify-center flex-wrap gap-4 max-w-[90%]">
-          <img src={`/${themes[theme].l}.png`} className="max-w-[30%] h-auto" alt="" />
-          <img src={`/${themes[theme].m}.png`} className="max-w-[30%] h-auto" alt="" />
-          <img src={`/${themes[theme].r}.png`} className="max-w-[30%] h-auto" alt="" />
+        {/* Bottom Images */}
+        <div className="flex justify-center flex-wrap gap-4 max-w-[90%] mt-4">
+          <motion.img
+            key={theme}  // Trigger animation on theme change
+            src={`/${themes[theme].l}.png`}
+            className="max-w-[30%] h-auto"
+            alt=""
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 2 }}
+          />
+          <motion.img
+            key={theme}  // Trigger animation on theme change
+            src={`/${themes[theme].m}.png`}
+            className="max-w-[30%] h-auto"
+            alt=""
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 2.2 }}
+          />
+          <motion.img
+            key={theme}  // Trigger animation on theme change
+            src={`/${themes[theme].r}.png`}
+            className="max-w-[30%] h-auto"
+            alt=""
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 2.4 }}
+          />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

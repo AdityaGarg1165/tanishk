@@ -1,2 +1,9 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: 'Toon Around';
+    src: url('/fonts/font.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
