@@ -5,19 +5,41 @@ import { useRouter } from "next/navigation";
 
 export default function TablePage() {
   const [theme, setTheme] = useState("trees");
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  
+
   const themes = {
     trees: { bg: "#e7ebd0", border: "#8b906f", graph: "yellow_graph.png", m: "yellow_tree", l: "yellow_coin1", r: "yellow_coin2" },
     ocean: { bg: "#e2f4f8", border: "#6f7f90", graph: "blue_graph.png", m: "blue_fish", l: "blue_coin1", r: "blue_coin2" },
     sand: { bg: "#efd5b4", border: "#8f7f6f", graph: "sand_graph.png", m: "sand_wheel", l: "sand_coin1", r: "sand_coin2" },
   };
 
-  useEffect(()=>{
-    let thm = localStorage.getItem("theme")
-    if(!thm) return;
-    setTheme(thm)
-  })
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    const thm = localStorage.getItem("theme");
+    if (thm) setTheme(thm);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center bg-[#0959b9] min-h-screen">
+        <motion.div
+          className="flex justify-center items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          {/* <h1 className="text-3xl font-semibold">Loading...</h1> */}
+          <img src="/load.gif" alt="" />
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -53,7 +75,7 @@ export default function TablePage() {
               className="block w-full text-left px-4 py-2 hover:bg-gray-200"
               onClick={() => {
                 setTheme(t);
-                localStorage.setItem("theme",t)
+                localStorage.setItem("theme", t);
                 document.getElementById("theme-menu").classList.add("hidden");
               }}
             >
@@ -81,12 +103,12 @@ export default function TablePage() {
           }}
           src={`/${themes[theme].graph}`}
           className="h-[18%] w-[80%] max-w-[100%] rounded-2xl"
-          alt="Background"
+          alt="Graph"
         />
 
         <motion.h1
           key={theme}
-          className={`text-2xl sm:text-3xl text-center font-semibold`}
+          className="text-2xl sm:text-3xl text-center font-semibold"
           style={{ fontFamily: 'Toon Around', color: themes[theme].border }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -102,11 +124,7 @@ export default function TablePage() {
             style={{ borderColor: themes[theme].border }}
             initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
             animate={{ opacity: 1, scale: 1, rotate: 360 }}
-            transition={{
-              duration: 0.8,
-              delay: 1,
-              ease: [0, 0.71, 0.2, 1.01],
-            }}
+            transition={{ duration: 0.8, delay: 1 }}
           >
             <thead>
               <motion.tr className="grid grid-cols-7">
@@ -192,15 +210,9 @@ export default function TablePage() {
               alt=""
             />
             <div
-              className="absolute bottom-0 right-0 w-12 h-12 cursor-pointer -translate-x-2 -translate-y-2"
-              onClick={() => router.push('/planner')}
-              title="Go to Planner"
-            />
-            <div
-              className="absolute top-16  right-0 w-12 h-12 cursor-pointer -translate-x-2 -translate-y-2"
-              onClick={() => router.push('/tracker')}
-              title="Go to Planner"
-            />
+              className="absolute bottom-0 right-0 w-12 h-12 cursor-pointer -translate-x-2 translate-y-2"
+              onClick={() => router.push("/")}
+            ></div>
           </motion.div>
         </div>
       </motion.div>
