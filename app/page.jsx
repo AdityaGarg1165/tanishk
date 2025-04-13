@@ -1,9 +1,12 @@
 'use client'
 import { useState } from "react";
 import { motion } from 'framer-motion'
+import { useRouter } from "next/navigation";
 
 export default function TablePage() {
   const [theme, setTheme] = useState("yellow");
+  const router = useRouter();
+  
   const themes = {
     yellow: { bg: "#e7ebd0", border: "#8b906f", graph: "yellow_graph.png", m: "yellow_tree", l: "yellow_coin1", r: "yellow_coin2" },
     blue: { bg: "#e2f4f8", border: "#6f7f90", graph: "blue_graph.png", m: "blue_fish", l: "blue_coin1", r: "blue_coin2" },
@@ -15,9 +18,8 @@ export default function TablePage() {
       className="flex justify-center items-center min-h-screen relative px-4"
       style={{ backgroundColor: themes[theme].bg }}
     >
-      {/* Theme Switcher */}
       <motion.div
-        key={theme}  // Trigger animation on theme change
+        key={theme}
         className="absolute right-3 top-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -54,17 +56,15 @@ export default function TablePage() {
         </div>
       </motion.div>
 
-      {/* Main Content */}
       <motion.div
-        key={theme}  // Trigger animation on theme change
+        key={theme}
         className="flex flex-col absolute top-12 items-center gap-4 w-full max-w-screen-md px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.5 }}
       >
-        {/* Graph */}
         <motion.img
-          key={theme}  // Trigger animation on theme change
+          key={theme}
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{
@@ -77,11 +77,10 @@ export default function TablePage() {
           alt="Background"
         />
 
-        {/* Monthly Hours Heading */}
         <motion.h1
-          key={theme}  // Trigger animation on theme change
+          key={theme}
           className={`text-2xl sm:text-3xl text-center font-semibold`}
-          style={{ fontFamily: 'Toon Around' ,color:themes[theme].border}}
+          style={{ fontFamily: 'Toon Around', color: themes[theme].border }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
@@ -89,10 +88,9 @@ export default function TablePage() {
           MONTHLY HOURS : XYZ
         </motion.h1>
 
-        {/* Table */}
         <div className="overflow-x-auto w-full">
           <motion.table
-            key={theme}  // Trigger animation on theme change
+            key={theme}
             className="border-collapse border w-full max-w-[70%] mx-auto"
             style={{ borderColor: themes[theme].border }}
             initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
@@ -155,10 +153,9 @@ export default function TablePage() {
           </motion.table>
         </div>
 
-        {/* Bottom Images */}
         <div className="flex justify-center flex-wrap gap-4 max-w-[90%] mt-4">
           <motion.img
-            key={theme}  // Trigger animation on theme change
+            key={theme}
             src={`/${themes[theme].l}.png`}
             className="max-w-[30%] h-auto"
             alt=""
@@ -167,7 +164,7 @@ export default function TablePage() {
             transition={{ duration: 0.8, delay: 2 }}
           />
           <motion.img
-            key={theme}  // Trigger animation on theme change
+            key={theme}
             src={`/${themes[theme].m}.png`}
             className="max-w-[30%] h-auto"
             alt=""
@@ -175,15 +172,24 @@ export default function TablePage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 2.2 }}
           />
-          <motion.img
-            key={theme}  // Trigger animation on theme change
-            src={`/${themes[theme].r}.png`}
-            className="max-w-[30%] h-auto"
-            alt=""
+          <motion.div
+            key={theme}
+            className="relative max-w-[30%]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 2.4 }}
-          />
+          >
+            <img
+              src={`/${themes[theme].r}.png`}
+              className="w-full h-auto"
+              alt=""
+            />
+            <div
+              className="absolute bottom-0 right-0 w-12 h-12 cursor-pointer -translate-x-2 -translate-y-2"
+              onClick={() => router.push('/planner')}
+              title="Go to Planner"
+            />
+          </motion.div>
         </div>
       </motion.div>
     </div>
