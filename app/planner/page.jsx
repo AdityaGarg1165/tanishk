@@ -1,18 +1,18 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from 'framer-motion'
 import { useRouter } from "next/navigation";
 
 export default function Planner() {
   const router = useRouter();
-  const [theme, setTheme] = useState("yellow");
+  const [theme, setTheme] = useState("trees");
   const [plannerData, setPlannerData] = useState(
     Array(5).fill(null).map(() => Array(7).fill(""))
   );
 
   const themes = {
-    yellow: { bg: "#e7ebd0", border: "#8b906f" },
-    blue: { bg: "#e2f4f8", border: "#6f7f90" },
+    trees: { bg: "#e7ebd0", border: "#8b906f" },
+    ocean: { bg: "#bfe8ff", border: "#6f7f90" },
     sand: { bg: "#efd5b4", border: "#8f7f6f" },
   };
 
@@ -21,6 +21,12 @@ export default function Planner() {
     updated[row][col] = value;
     setPlannerData(updated);
   };
+
+  useEffect(()=>{
+    const thm = localStorage.getItem("theme")
+    if(!thm) return;
+    setTheme(thm)
+  },[])
 
   return (
     <div
@@ -70,6 +76,7 @@ export default function Planner() {
                 className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                 onClick={() => {
                   setTheme(t);
+                  localStorage.setItem("theme",t)
                   document.getElementById("theme-menu").classList.add("hidden");
                 }}
               >

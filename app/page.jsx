@@ -1,17 +1,23 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from 'framer-motion'
 import { useRouter } from "next/navigation";
 
 export default function TablePage() {
-  const [theme, setTheme] = useState("yellow");
+  const [theme, setTheme] = useState("trees");
   const router = useRouter();
   
   const themes = {
-    yellow: { bg: "#e7ebd0", border: "#8b906f", graph: "yellow_graph.png", m: "yellow_tree", l: "yellow_coin1", r: "yellow_coin2" },
-    blue: { bg: "#e2f4f8", border: "#6f7f90", graph: "blue_graph.png", m: "blue_fish", l: "blue_coin1", r: "blue_coin2" },
+    trees: { bg: "#e7ebd0", border: "#8b906f", graph: "yellow_graph.png", m: "yellow_tree", l: "yellow_coin1", r: "yellow_coin2" },
+    ocean: { bg: "#e2f4f8", border: "#6f7f90", graph: "blue_graph.png", m: "blue_fish", l: "blue_coin1", r: "blue_coin2" },
     sand: { bg: "#efd5b4", border: "#8f7f6f", graph: "sand_graph.png", m: "sand_wheel", l: "sand_coin1", r: "sand_coin2" },
   };
+
+  useEffect(()=>{
+    let thm = localStorage.getItem("theme")
+    if(!thm) return;
+    setTheme(thm)
+  })
 
   return (
     <div
@@ -47,6 +53,7 @@ export default function TablePage() {
               className="block w-full text-left px-4 py-2 hover:bg-gray-200"
               onClick={() => {
                 setTheme(t);
+                localStorage.setItem("theme",t)
                 document.getElementById("theme-menu").classList.add("hidden");
               }}
             >
