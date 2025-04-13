@@ -189,6 +189,11 @@ export default function TablePage() {
               onClick={() => router.push('/planner')}
               title="Go to Planner"
             />
+            <div
+              className="absolute top-2 right-0 w-12 h-12 cursor-pointer -translate-x-2 -translate-y-2"
+              onClick={() => router.push('/tracker')}
+              title="Go to Planner"
+            />
           </motion.div>
         </div>
       </motion.div>
