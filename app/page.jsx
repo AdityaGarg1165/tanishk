@@ -216,6 +216,11 @@ export default function TablePage() {
               title="Go to Planner"
             />
             <div
+              className="absolute bg-black top-1 left-2 w-12 h-12 cursor-pointer"
+              onClick={() => router.push("/timer")}
+              title="Go to Planner"
+            />
+            <div
               className="absolute top-16 right-0 w-12 h-12 cursor-pointer"
               onClick={() => router.push("/tracker")}
               title="Go to Tracker"
