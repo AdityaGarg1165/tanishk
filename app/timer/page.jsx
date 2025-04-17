@@ -156,7 +156,7 @@ export default function Planner() {
 
         {/* Other Planner Content */}
         <div className="overflow-x-auto w-full">
-          {/* Add more planner stuff here if needed */}
+          
         </div>
       </motion.div>
     </div>

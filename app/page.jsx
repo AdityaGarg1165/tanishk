@@ -180,15 +180,34 @@ export default function TablePage() {
 
         {/* Footer Icons with Buttons */}
         <div className="flex justify-center flex-wrap gap-4 max-w-[90%] mt-4">
-          <motion.img
+        <motion.div
             key={theme}
-            src={`/${themes[theme].l}.png`}
-            className="max-w-[30%] h-auto"
-            alt=""
+            className="relative max-w-[30%]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 2 }}
-          />
+            transition={{ duration: 0.8, delay: 2.4 }}
+          >
+            <img
+              src={`/${themes[theme].l}.png`}
+              className="w-full h-auto"
+              alt=""
+            />
+            <div
+              className="absolute bottom-0 left-0 w-12 h-12 cursor-pointer"
+              onClick={() => router.push("/planner")}
+              title="Go to Planner"
+            />
+            <div
+              className="absolute top-1 left-2 w-12 h-12 cursor-pointer"
+              onClick={() => router.push("/timer")}
+              title="Go to Planner"
+            />
+            <div
+              className="absolute top-12 left-5 w-12 h-12 cursor-pointer "
+              onClick={() => router.push("/teacher")}
+              title="Go to Tracker"
+            />
+          </motion.div>
           <motion.img
             key={theme}
             src={`/${themes[theme].m}.png`}

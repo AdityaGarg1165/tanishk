@@ -8,25 +8,24 @@ export default function Planner() {
   const [theme, setTheme] = useState("trees");
   const [isRunning, setIsRunning] = useState(false);
   const [seconds, setSeconds] = useState(0);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const themes = {
-    trees: { timer: "#999e75", bg: "#e7ebd0", border: "#8b906f",img:"yellow_tree.png" },
-    ocean: { timer: "#a1c3d4", bg: "#e2f4f8", border: "#6f7f90",img:"blue_fish.png" },
-    sand: { timer: "#d1b38d", bg: "#efd5b4", border: "#8f7f6f",img:"sand_wheel.png" },
+    trees: { timer: "#999e75", bg: "#e7ebd0", border: "#8b906f", img: "yellow_tree.png" },
+    ocean: { timer: "#a1c3d4", bg: "#e2f4f8", border: "#6f7f90", img: "blue_fish.png" },
+    sand: { timer: "#d1b38d", bg: "#efd5b4", border: "#8f7f6f", img: "sand_wheel.png" },
   };
 
   useEffect(() => {
     const thm = localStorage.getItem("theme");
-    if (!thm) return;
-    setTheme(thm);
+    if (thm) setTheme(thm);
   }, []);
 
   useEffect(() => {
     let interval;
     if (isRunning) {
-      interval = setInterval(() => {
-        setSeconds(prev => prev + 1);
-      }, 1000);
+      interval = setInterval(() => setSeconds(prev => prev + 1), 1000);
     }
     return () => clearInterval(interval);
   }, [isRunning]);
@@ -37,9 +36,15 @@ export default function Planner() {
     return `${mins}:${secs}`;
   };
 
+  const handleSend = () => {
+    if (!input.trim()) return;
+    setMessages(prev => [...prev, input]);
+    setInput("");
+  };
+
   return (
     <div
-      className="flex justify-center items-center min-h-screen w-full relative overflow-hidden"
+      className="min-h-screen w-full relative overflow-hidden"
       style={{ backgroundColor: themes[theme].bg }}
     >
       {/* Back Button */}
@@ -70,7 +75,7 @@ export default function Planner() {
           stroke="currentColor"
           className="size-6 cursor-pointer"
           onClick={() =>
-            document.getElementById("theme-menu").classList.toggle("hidden")
+            document.getElementById("theme-menu")?.classList.toggle("hidden")
           }
         >
           <path
@@ -90,7 +95,7 @@ export default function Planner() {
               onClick={() => {
                 setTheme(t);
                 localStorage.setItem("theme", t);
-                document.getElementById("theme-menu").classList.add("hidden");
+                document.getElementById("theme-menu")?.classList.add("hidden");
               }}
             >
               {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -99,66 +104,56 @@ export default function Planner() {
         </div>
       </motion.div>
 
-      {/* Main Content */}
-      <motion.div
-        key={theme}
-        className="flex flex-col items-center gap-4 w-full max-w-screen-md px-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-      >
-        {/* Study Timer Box */}
-        <motion.div
-          style={{ border: `6px solid ${themes[theme].timer}` }}
-          className="w-64 h-80 rounded-2xl flex flex-col items-center"
+      {/* Main Layout */}
+      <div className="flex flex-col md:flex-row gap-4 p-4 pt-16">
+        {/* Teacher List */}
+        <div
+          className="border-2 p-4 rounded-md w-full md:w-[180px] flex-shrink-0"
+          style={{ fontFamily: "Toon Around" }}
         >
-          <h1
-            className="text-2xl text-center mt-2"
-            style={{ fontFamily: "Toon Around" }}
-          >
-            STUDY TIMER
-          </h1>
-          <div
-            className="divider w-full h-2 mt-2"
-            style={{ backgroundColor: themes[theme].timer }}
-          ></div>
-          {theme === "ocean" ?
-          <img className={`w-18 rotate-90`} src={`/${themes[theme].img}`} alt="" />
-          :
-
-            <img className={`w-14`} src={`/${themes[theme].img}`} alt="" />
-
-        }
-          <div
-            className="w-36 h-16 mt-1 rounded-2xl"
-            style={{ border: `6px ${themes[theme].timer} solid` }}
-          >
-            <h1
-              className="text-4xl ml-8 mt-1.5"
-              style={{ fontFamily: "Toon Around" }}
-            >
-              {formatTime(seconds)}
-            </h1>
-          </div>
-          <div
-            className="w-20 h-12 mt-4 bg-[#e4f1f9] rounded-3xl flex items-center justify-center cursor-pointer"
-            style={{ border: `6px ${themes[theme].timer} solid` }}
-            onClick={() => setIsRunning((prev) => !prev)}
-          >
-            <h1
-              style={{ fontFamily: "Toon Around" }}
-              className="text-xl"
-            >
-              {isRunning ? "STOP" : "START"}
-            </h1>
-          </div>
-        </motion.div>
-
-        {/* Other Planner Content */}
-        <div className="overflow-x-auto w-full">
-          {/* Add more planner stuff here if needed */}
+          <h1 className="text-center font-bold text-xl">TEACHERS</h1>
+          <ul className="flex flex-col gap-4 mt-8 list-disc list-inside text-sm">
+            <li>Maths</li>
+            <li>Biology</li>
+            <li>Chemistry</li>
+            <li>Physics</li>
+            <li>Business</li>
+            <li>P.E</li>
+            <li>Add More +</li>
+          </ul>
         </div>
-      </motion.div>
+
+        {/* Chatbox */}
+        <div className="border-2 flex-1 flex flex-col rounded-md max-h-[85vh]">
+          <h1 className="ml-2 mt-2 underline" style={{ fontFamily: "Toon Around" }}>
+            Open Chat
+          </h1>
+          <div className="flex-1 overflow-auto p-2 space-y-2">
+            {messages.map((msg, idx) => (
+              <div key={idx} className="bg-white rounded p-2 shadow w-fit max-w-[80%]">
+                {msg}
+              </div>
+            ))}
+          </div>
+          <div className="flex p-2 gap-2 items-center">
+  <input
+    value={input}
+    onChange={(e) => setInput(e.target.value)}
+    type="text"
+    className="w-full sm:w-[calc(100%-80px)] rounded-2xl border-2 h-10 px-4"
+    placeholder="Type your message..."
+  />
+  <button
+    onClick={handleSend}
+    className="w-[70px] rounded-2xl border-2 h-10 flex items-center justify-center"
+    style={{ fontFamily: "Toon Around" }}
+  >
+    SEND
+  </button>
+</div>
+
+        </div>
+      </div>
     </div>
   );
 }
