@@ -193,13 +193,13 @@ export default function TablePage() {
               alt=""
             />
             <div
-              className="absolute bottom-0 left-0 w-12 h-12 cursor-pointer"
+              className="absolute ml-2  bottom-0 left-0 w-12 h-12 cursor-pointer"
               onClick={() => router.push("/planner")}
               title="Go to Planner"
             />
             <div
               className="absolute top-1 left-2 w-12 h-12 cursor-pointer"
-              onClick={() => router.push("/timer")}
+              onClick={() => router.push("/todo")}
               title="Go to Planner"
             />
             <div
